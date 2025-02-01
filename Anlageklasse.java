@@ -1,15 +1,15 @@
-public abstract class Anlageklasse {
-    private int id;
-    private double anfangswert;
-    private double aktuellerWert;
-    private float rendite;
-
-    Anlageklasse(double pAnfangswert, float pRendite) {
-        anfangswert = pAnfangswert;
-        aktuellerWert = pAnfangswert;
-        rendite = pRendite;
+abstract class Anlageklasse {
+    protected double startkapital;
+    protected int laufzeit;
+    protected double erwarteteRendite;
+    protected double volatilität;
+    
+    public Anlageklasse(double startkapital, int laufzeit, double erwarteteRendite, double volatilität) {
+        this.startkapital = startkapital;
+        this.laufzeit = laufzeit;
+        this.erwarteteRendite = erwarteteRendite;
+        this.volatilität = volatilität;
     }
-    public void simulate() {
-        
-    }
+    
+    public abstract double simulieren();
 }
