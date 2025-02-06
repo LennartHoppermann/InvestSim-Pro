@@ -1,0 +1,199 @@
+/* Hauptlayout */
+.landing-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    padding: 0 5%;
+    background: linear-gradient(135deg, #0a0a23, #14142b);
+    color: white;
+}
+
+/* Linke Seite (Über mich & Unternehmen) */
+.about-container {
+    width: 25%;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    text-align: center;
+    max-height: 80vh; /* NEU: Begrenzt die Höhe */
+    overflow-y: auto; /* NEU: Falls mehr Text kommt, bleibt es scrollbar */
+}
+
+/* Scrollbar-Styling */
+.about-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.about-container::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 5px;
+}
+
+.founder-image {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    margin-bottom: 15px;
+}
+
+
+/* Überschrift „Kundenmeinungen“ */
+.customer-reviews-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ffff;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Graue Box für Kundenmeinungen */
+.review {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    text-align: left;
+    margin-top: 10px;
+}
+
+/* Text in der Kundenmeinung */
+.review p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+/* Mittlerer Bereich (Willkommen & Video) */
+.center-content {
+    width: 45%;
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+}
+
+.start-button {
+    background: transparent;
+    color: #0ff;
+    font-size: 18px;
+    padding: 12px 24px;
+    border: 2px solid #0ff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+}
+
+.start-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff;
+}
+
+.video-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Rechte Seite (Marktdaten & Chatbot) */
+.finance-container {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.market-data, .economic-calendar, .finance-chatbot, .heatmap-link {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    text-align: center;
+}
+
+.finance-chatbot input {
+    width: 70%;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+.ask-button {
+    background: #0ff;
+    color: black;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.ask-button:hover {
+    background: rgba(0, 255, 255, 0.8);
+}
+
+/* Heatmap-Link */
+.heatmap-link {
+    background: rgba(255, 69, 0, 0.8);
+    color: white;
+    font-weight: bold;
+}
+.footer-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: black;
+    color: #00ffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    box-shadow: 0 -4px 10px rgba(0, 255, 255, 0.5);
+    z-index: 1000;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: #00ffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.footer-links a:hover {
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.music-button {
+    background: #00ffff;
+    color: black;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+.music-button:hover {
+    background: rgba(0, 255, 255, 0.8);
+}
+

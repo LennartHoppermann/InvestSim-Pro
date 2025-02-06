@@ -1,0 +1,38 @@
+/* Stil für alle Widgets */
+.stock-ticker, .finance-calendar, .finance-chatbot, .market-heatmap {
+    background: rgba(10, 25, 47, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Wirtschaftskalender */
+.finance-calendar ul {
+    list-style: none;
+    padding: 0;
+}
+.finance-calendar li {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Chatbot */
+.finance-chatbot input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #0ff;
+    background: black;
+    color: white;
+    border-radius: 5px;
+}
+.finance-chatbot button {
+    background: #0ff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    border-radius: 5px;
+}
