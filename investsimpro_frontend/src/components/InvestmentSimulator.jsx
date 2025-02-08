@@ -4,14 +4,12 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 export default function InvestmentSimulator({ onBack }) {
     const [selectedInvestments, setSelectedInvestments] = useState([]);
-    const [simulationCount, setSimulationCount] = useState("");
     const [investmentAmounts, setInvestmentAmounts] = useState({});
     const [annualContributions, setAnnualContributions] = useState({});
     const [investmentPeriod, setInvestmentPeriod] = useState("");
+    const [simulationResults, setSimulationResults] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [musicPlaying, setMusicPlaying] = useState(true);
-    const audioRef = useRef(null);
 
     const investmentOptions = [
         { name: "Aktien", risk: "Hoch", return: "8-12%" },
@@ -24,6 +22,15 @@ export default function InvestmentSimulator({ onBack }) {
         setSelectedInvestments((prev) =>
             prev.includes(name) ? prev.filter((item) => item !== name) : [...prev, name]
         );
+
+        setInvestmentAmounts((prev) => ({
+            ...prev,
+            [name]: prev[name] || "",
+        }));
+        setAnnualContributions((prev) => ({
+            ...prev,
+            [name]: prev[name] || "",
+        }));
     };
 
     const handleInvestmentChange = (name, value) => {
@@ -39,22 +46,25 @@ export default function InvestmentSimulator({ onBack }) {
         return () => clearTimeout(timer);
     }, []);
 
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.play().then(() => {
-                audioRef.current.volume = 0.4;
-            }).catch((error) => console.error("Musik kann nicht automatisch abgespielt werden:", error));
+    const handleSubmit = async () => {
+        if (!investmentPeriod || selectedInvestments.length === 0) {
+            alert("Bitte alle Felder ausfüllen!");
+            return;
         }
-    }, []);
 
-    const toggleMusic = () => {
-        if (audioRef.current) {
-            if (musicPlaying) {
-                audioRef.current.pause();
-            } else {
-                audioRef.current.play();
-            }
-            setMusicPlaying(!musicPlaying);
+        const query = new URLSearchParams({
+            startkapital: Object.values(investmentAmounts).reduce((a, b) => a + (b || 0), 0), // Summe aller Investitionen
+            laufzeit: investmentPeriod,
+            anlageklassen: selectedInvestments.join(","),
+        }).toString();
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/simulation/run?${query}`);
+            if (!response.ok) throw new Error("Fehler beim Abrufen der Daten");
+            const data = await response.json();
+            setSimulationResults(data);
+        } catch (error) {
+            console.error("Fehler:", error);
         }
     };
 
@@ -114,34 +124,21 @@ export default function InvestmentSimulator({ onBack }) {
                     <p className="tax-info">Steuern werden in der Berechnung nicht berücksichtigt.</p>
 
                     <div className="input-container">
-                        <label className="label-title">Wie viele Simulationen sollen durchgeführt werden?</label>
-                        <p className="small-info">Wählen Sie die Anzahl der Durchläufe zur besseren Analyse von Schwankungen.</p>
-                        <div className="spacer"></div>
+                        <label className="label-title">Laufzeit (Jahre):</label>
                         <input
                             type="number"
                             min="1"
-                            value={simulationCount || ""}
-                            onChange={(e) => setSimulationCount(Number(e.target.value))}
-                            className="simulation-input"
+                            value={investmentPeriod}
+                            onChange={(e) => setInvestmentPeriod(e.target.value)}
+                            className="input-field"
                         />
                     </div>
 
-                    {simulationCount > 0 && selectedInvestments.length > 0 && (
+                    {selectedInvestments.length > 0 && (
                         <>
-                            <div className="investment-input-group">
-                                <label className="label-title">Laufzeit (Jahre):</label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    value={investmentPeriod}
-                                    onChange={(e) => setInvestmentPeriod(e.target.value)}
-                                    className="input-field"
-                                />
-                            </div>
-
                             {selectedInvestments.map((investment) => (
                                 <div key={investment} className="investment-row">
-                                    <label>Wie viel möchten Sie in {investment} investieren?</label>
+                                    <label>Investitionsbetrag für {investment}:</label>
                                     <input
                                         type="number"
                                         min="0"
@@ -149,7 +146,7 @@ export default function InvestmentSimulator({ onBack }) {
                                         onChange={(e) => handleInvestmentChange(investment, e.target.value)}
                                         className="input-field"
                                     />
-                                    <label>Möchten Sie auch jährlich etwas einsparen in {investment}?</label>
+                                    <label>Jährliche Einzahlung für {investment}:</label>
                                     <input
                                         type="number"
                                         min="0"
@@ -163,44 +160,49 @@ export default function InvestmentSimulator({ onBack }) {
                     )}
 
                     <div className="spacer"></div>
-                    <label className="label-title">Soll eine Datei erstellt werden?</label>
-                    <div className="checkbox-group">
-                        <label><input type="checkbox" /> .txt</label>
-                        <label><input type="checkbox" /> .csv</label>
-                    </div>
-                    <div className="spacer"></div>
-                    <button className="calculate-button">Investitionsberechnung durchführen</button>
-
-                    <footer className="footer2">Made by Lennart Hoppermann</footer>
-                </div>
-
-                {portfolioData.some((data) => data.value > 0) && (
-                    <div className="chart-section">
-                        <h3 className="chart-title">Portfoliodiversifikation</h3>
-                        <div className="chart-container">
-                            <PieChart width={400} height={300}>
-                            <Pie data={portfolioData} dataKey="value" outerRadius={100} label>
-                            {portfolioData.map((_, index) => (
-                            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                            ))}
-                            </Pie>
-                            <Tooltip />
-                            <Legend />
-                            </PieChart>
-                        </div>
-                    </div>
-                )}
-                <footer className="footer-container">
-                    <button className="music-button" onClick={toggleMusic}>
-                        {musicPlaying ? "🔇 Musik aus" : "🔊 Musik an"}
+                    <button className="calculate-button" onClick={handleSubmit}>
+                        Investitionsberechnung durchführen
                     </button>
-                    <div className="footer-links">
-                        <a href="/impressum">Impressum</a>
-                        <a href="/datenschutz">Datenschutz</a>
-                        <a href="/ueber-uns">Über uns</a>
-                        <a href="/jobs">Jobs</a>
-                    </div>
-                </footer>
+
+                    {simulationResults && (
+                        <div className="results-container">
+                            <h3>Simulationsergebnisse</h3>
+                            <table className="results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Jahr</th>
+                                        <th>Kapital (€)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Object.entries(simulationResults).map(([jahr, kapital]) => (
+                                        <tr key={jahr}>
+                                            <td>{jahr}</td>
+                                            <td>{kapital.toFixed(2)} €</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    {portfolioData.some((data) => data.value > 0) && (
+                        <div className="chart-section">
+                            <h3 className="chart-title">Portfoliodiversifikation</h3>
+                            <div className="chart-container">
+                                <PieChart width={400} height={300}>
+                                    <Pie data={portfolioData} dataKey="value" outerRadius={100} label>
+                                        {portfolioData.map((_, index) => (
+                                            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
