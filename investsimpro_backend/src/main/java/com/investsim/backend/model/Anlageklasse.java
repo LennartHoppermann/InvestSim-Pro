@@ -1,7 +1,8 @@
-package investsimpro_backend.src;
+package com.investsim.backend.model;
+
 import java.util.*;
 
-abstract class Anlageklasse {
+public abstract class Anlageklasse {
     protected String name;
     protected double startkapital;
     protected int laufzeit;
@@ -31,5 +32,9 @@ abstract class Anlageklasse {
             verlauf.put(jahr, kapital);
         }
         return verlauf;
+    }
+
+    public String getName() {
+        return name;
     }
 }

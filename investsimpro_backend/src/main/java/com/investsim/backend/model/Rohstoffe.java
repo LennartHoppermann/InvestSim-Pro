@@ -1,6 +1,6 @@
-package investsimpro_backend.src;
+package com.investsim.backend.model;
 
-class Rohstoffe extends Anlageklasse {
+public class Rohstoffe extends Anlageklasse {
     public Rohstoffe(double startkapital, int laufzeit, double jaehrlicheEinzahlung) {
         super("Rohstoffe", startkapital, laufzeit, jaehrlicheEinzahlung, 6.0, 10.0);
     }

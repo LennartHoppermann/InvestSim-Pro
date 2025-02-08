@@ -1,6 +1,6 @@
-package investsimpro_backend.src;
+package com.investsim.backend.model;
 
-class Immobilien extends Anlageklasse {
+public class Immobilien extends Anlageklasse {
     public Immobilien(double startkapital, int laufzeit, double jaehrlicheEinzahlung) {
         super("Immobilien", startkapital, laufzeit, jaehrlicheEinzahlung, 5.0, 7.0);
     }

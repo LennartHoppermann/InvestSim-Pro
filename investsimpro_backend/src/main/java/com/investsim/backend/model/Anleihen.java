@@ -1,7 +1,8 @@
-package investsimpro_backend.src;
+package com.investsim.backend.model;
 
-class Anleihen extends Anlageklasse {
+public class Anleihen extends Anlageklasse {
     public Anleihen(double startkapital, int laufzeit, double jaehrlicheEinzahlung) {
         super("Anleihen", startkapital, laufzeit, jaehrlicheEinzahlung, 3.0, 5.0);
     }
 }
+
