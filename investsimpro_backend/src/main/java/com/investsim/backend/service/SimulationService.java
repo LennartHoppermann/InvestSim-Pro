@@ -1,5 +1,6 @@
 package com.investsim.backend.service;
 
+import com.investsim.backend.dto.InvestmentDetail;
 import com.investsim.backend.model.Anlageklasse;
 import com.investsim.backend.model.Aktien;
 import com.investsim.backend.model.Anleihen;
@@ -15,18 +16,22 @@ import java.util.*;
 public class SimulationService {
     private static final Logger logger = LoggerFactory.getLogger(SimulationService.class);
 
-    public Map<Integer, Double> simuliereInvestition(double startkapital, int laufzeit, List<String> anlageklassen) {
+    public Map<Integer, Double> simuliereInvestition(Map<String, InvestmentDetail> investitionen, int laufzeit) {
         Map<Integer, Double> simulationErgebnisse = new LinkedHashMap<>();
         List<Anlageklasse> investments = new ArrayList<>();
 
-        logger.info("Simulation gestartet mit Startkapital: " + startkapital + ", Laufzeit: " + laufzeit + ", Anlageklassen: " + anlageklassen);
+        logger.info("Simulation gestartet mit Investitionen: " + investitionen + ", Laufzeit: " + laufzeit);
 
-        for (String typ : anlageklassen) {
+        for (Map.Entry<String, InvestmentDetail> entry : investitionen.entrySet()) {
+            String typ = entry.getKey();
+            double kapital = entry.getValue().getStartkapital();
+            double jaehrlicheEinzahlung = entry.getValue().getJaehrlicheEinzahlung();
+
             switch (typ.toLowerCase()) {
-                case "aktien" -> investments.add(new Aktien(startkapital, laufzeit, 0));
-                case "anleihen" -> investments.add(new Anleihen(startkapital, laufzeit, 0));
-                case "immobilien" -> investments.add(new Immobilien(startkapital, laufzeit, 0));
-                case "rohstoffe" -> investments.add(new Rohstoffe(startkapital, laufzeit, 0));
+                case "aktien" -> investments.add(new Aktien(kapital, laufzeit, jaehrlicheEinzahlung));
+                case "anleihen" -> investments.add(new Anleihen(kapital, laufzeit, jaehrlicheEinzahlung));
+                case "immobilien" -> investments.add(new Immobilien(kapital, laufzeit, jaehrlicheEinzahlung));
+                case "rohstoffe" -> investments.add(new Rohstoffe(kapital, laufzeit, jaehrlicheEinzahlung));
                 default -> logger.warn("Unbekannte Anlageklasse: " + typ);
             }
         }

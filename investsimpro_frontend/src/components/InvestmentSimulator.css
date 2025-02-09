@@ -306,3 +306,42 @@
 .music-button:hover {
     background: rgba(0, 255, 255, 0.8);
 }
+
+/* Flexbox für Eingabefelder + Ergebnisse */
+.input-results-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+}
+
+/* Container für Eingaben und Ergebnisse */
+.input-results-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Simulationsergebnisse anpassbar */
+.results-container {
+    background: #222;
+    padding: 15px;
+    border-radius: 5px;
+    border: 2px solid #0ff;
+    color: white;
+}
+
+/* Chart jetzt rechts neben den Eingaben */
+.chart-container {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    border: 3px solid #00ffff;
+    padding: 10px;
+}

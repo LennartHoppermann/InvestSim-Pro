@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import "./InvestmentSimulator.css";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
@@ -52,19 +52,29 @@ export default function InvestmentSimulator({ onBack }) {
             return;
         }
 
-        const query = new URLSearchParams({
-            startkapital: Object.values(investmentAmounts).reduce((a, b) => a + (b || 0), 0), // Summe aller Investitionen
-            laufzeit: investmentPeriod,
-            anlageklassen: selectedInvestments.join(","),
-        }).toString();
+        const requestBody = {
+            laufzeit: parseInt(investmentPeriod, 10),
+            investitionen: selectedInvestments.reduce((acc, investment) => {
+                acc[investment] = {
+                    startkapital: investmentAmounts[investment] || 0,
+                    jaehrlicheEinzahlung: annualContributions[investment] || 0
+                };
+                return acc;
+            }, {}),
+        };
 
         try {
-            const response = await fetch(`http://localhost:8080/api/simulation/run?${query}`);
+            const response = await fetch("http://localhost:8080/api/simulation/run", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestBody),
+            });
             if (!response.ok) throw new Error("Fehler beim Abrufen der Daten");
             const data = await response.json();
             setSimulationResults(data);
         } catch (error) {
             console.error("Fehler:", error);
+            alert("Fehler beim Laden der Simulationsergebnisse.");
         }
     };
 
@@ -183,23 +193,6 @@ export default function InvestmentSimulator({ onBack }) {
                                     ))}
                                 </tbody>
                             </table>
-                        </div>
-                    )}
-
-                    {portfolioData.some((data) => data.value > 0) && (
-                        <div className="chart-section">
-                            <h3 className="chart-title">Portfoliodiversifikation</h3>
-                            <div className="chart-container">
-                                <PieChart width={400} height={300}>
-                                    <Pie data={portfolioData} dataKey="value" outerRadius={100} label>
-                                        {portfolioData.map((_, index) => (
-                                            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip />
-                                    <Legend />
-                                </PieChart>
-                            </div>
                         </div>
                     )}
                 </div>
