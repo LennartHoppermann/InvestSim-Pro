@@ -1,7 +1,5 @@
 package com.investsim.backend.model;
 
-import java.util.*;
-
 public abstract class Anlageklasse {
     protected String name;
     protected double startkapital;
@@ -19,22 +17,27 @@ public abstract class Anlageklasse {
         this.volatilitaet = volatilitaet;
     }
 
-    public Map<Integer, Double> simuliereVerlauf() {
-        Map<Integer, Double> verlauf = new LinkedHashMap<>();
-        double kapital = startkapital;
-        Random random = new Random();
-
-        for (int jahr = 1; jahr <= laufzeit; jahr++) {
-            double zufall = random.nextGaussian();
-            double jahresrendite = durchschnittlicheRendite + (volatilitaet * zufall);
-            kapital *= (1 + jahresrendite / 100);
-            kapital += jaehrlicheEinzahlung;
-            verlauf.put(jahr, kapital);
-        }
-        return verlauf;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public double getStartkapital() {
+        return startkapital;
+    }
+
+    public int getLaufzeit() {
+        return laufzeit;
+    }
+
+    public double getJaehrlicheEinzahlung() {
+        return jaehrlicheEinzahlung;
+    }
+
+    public double getDurchschnittlicheRendite() {
+        return durchschnittlicheRendite;
+    }
+
+    public double getVolatilitaet() {
+        return volatilitaet;
     }
 }

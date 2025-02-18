@@ -25,11 +25,12 @@ export default function InvestmentSimulator({ onBack }) {
 
         setInvestmentAmounts((prev) => ({
             ...prev,
-            [name]: prev[name] || "",
+            [name]: prev[name] !== undefined ? prev[name] : "",
         }));
+
         setAnnualContributions((prev) => ({
             ...prev,
-            [name]: prev[name] || "",
+            [name]: prev[name] !== undefined ? prev[name] : "",
         }));
     };
 
@@ -78,11 +79,6 @@ export default function InvestmentSimulator({ onBack }) {
         }
     };
 
-    const portfolioData = selectedInvestments.map((investment) => ({
-        name: investment,
-        value: investmentAmounts[investment] ? parseFloat(investmentAmounts[investment]) : 0,
-    }));
-
     const colors = ["#ffcc00", "#ff6600", "#33cc33", "#0099ff"];
 
     if (loading) {
@@ -99,17 +95,6 @@ export default function InvestmentSimulator({ onBack }) {
             <nav className="navbar">
                 <div className="nav-title">
                     <span className="highlighted-title" onClick={onBack}>InvestSim Pro</span>
-                </div>
-                <div className="menu-container">
-                    <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}>☰</button>
-                    {menuOpen && (
-                        <div className="menu-dropdown">
-                            <a href="/">🏠 Homepage</a>
-                            <a href="/memepage">😂 Memepage</a>
-                            <a href="/simulator">📊 InvestSim Pro</a>
-                            <a href="/impressum">📜 Impressum</a>
-                        </div>
-                    )}
                 </div>
             </nav>
 
@@ -176,23 +161,76 @@ export default function InvestmentSimulator({ onBack }) {
 
                     {simulationResults && (
                         <div className="results-container">
-                            <h3>Simulationsergebnisse</h3>
-                            <table className="results-table">
-                                <thead>
-                                    <tr>
-                                        <th>Jahr</th>
-                                        <th>Kapital (€)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Object.entries(simulationResults).map(([jahr, kapital]) => (
-                                        <tr key={jahr}>
-                                            <td>{jahr}</td>
-                                            <td>{kapital.toFixed(2)} €</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                            <h3>Ergebnisse der Investitionssimulation</h3>
+                            {Object.entries(simulationResults).map(([investment, results]) => (
+                                <div key={investment}>
+                                    <h4>{investment}</h4>
+                                    {Array.isArray(results) ? (
+                                        <table className="results-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Jahr</th>
+                                                    <th>Startkapital (€)</th>
+                                                    <th>Rendite (%)</th>
+                                                    <th>Endkapital (€)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {results.map(({ jahr, startkapital, rendite, endkapital }) => (
+                                                    <tr key={jahr}>
+                                                        <td>{jahr}</td>
+                                                        <td>{startkapital !== undefined ? startkapital.toFixed(2) : "N/A"} €</td>
+                                                        <td>{rendite !== undefined ? rendite.toFixed(2) : "N/A"} %</td>
+                                                        <td>{endkapital !== undefined ? endkapital.toFixed(2) : "N/A"} €</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <p>Keine Ergebnisse verfügbar</p>
+                                    )}
+                                </div>
+                            ))}
+                            <div className="summary">
+                                <p>Gesamtrendite nach {investmentPeriod} Jahren: {simulationResults.totalReturn !== undefined ? simulationResults.totalReturn.toFixed(2) : "N/A"} €</p>
+                                <p>Endkapital: {simulationResults.totalEndCapital !== undefined ? simulationResults.totalEndCapital.toFixed(2) : "N/A"} €</p>
+                            </div>
+                            <div className="chart-container">
+                                {simulationResults.portfolioStart && simulationResults.portfolioEnd && (
+                                    <PieChart width={400} height={400}>
+                                        <Pie
+                                            data={simulationResults.portfolioStart}
+                                            dataKey="value"
+                                            nameKey="name"
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={60}
+                                            fill="#8884d8"
+                                        >
+                                            {simulationResults.portfolioStart.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Pie
+                                            data={simulationResults.portfolioEnd}
+                                            dataKey="value"
+                                            nameKey="name"
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={70}
+                                            outerRadius={90}
+                                            fill="#82ca9d"
+                                            label
+                                        >
+                                            {simulationResults.portfolioEnd.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                        <Legend />
+                                    </PieChart>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>

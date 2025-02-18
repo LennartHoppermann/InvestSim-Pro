@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/simulation")
-@CrossOrigin(origins = "http://localhost:5173") // React-Frontend erlauben
+@CrossOrigin(origins = "http://localhost:5173")
 public class SimulationController {
 
     private final SimulationService simulationService;
@@ -18,8 +18,7 @@ public class SimulationController {
     }
 
     @PostMapping("/run")
-    public Map<Integer, Double> runSimulation(@RequestBody SimulationRequest request) {
+    public Map<String, Object> runSimulation(@RequestBody SimulationRequest request) {
         return simulationService.simuliereInvestition(request.getInvestitionen(), request.getLaufzeit());
     }
 }
-

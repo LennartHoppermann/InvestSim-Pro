@@ -15,39 +15,49 @@ import java.util.*;
 @Service
 public class SimulationService {
     private static final Logger logger = LoggerFactory.getLogger(SimulationService.class);
+    private final MainSimulation mainSimulation;
 
-    public Map<Integer, Double> simuliereInvestition(Map<String, InvestmentDetail> investitionen, int laufzeit) {
-        Map<Integer, Double> simulationErgebnisse = new LinkedHashMap<>();
+    public SimulationService(MainSimulation mainSimulation) {
+        this.mainSimulation = mainSimulation;
+    }
+
+    public Map<String, Object> simuliereInvestition(Map<String, InvestmentDetail> investitionen, int laufzeit) {
+        Map<String, Object> ergebnisse = new LinkedHashMap<>();
         List<Anlageklasse> investments = new ArrayList<>();
 
         logger.info("Simulation gestartet mit Investitionen: " + investitionen + ", Laufzeit: " + laufzeit);
+
+        double gesamtStartkapital = 0;
+        double gesamtEndkapital = 0;
 
         for (Map.Entry<String, InvestmentDetail> entry : investitionen.entrySet()) {
             String typ = entry.getKey();
             double kapital = entry.getValue().getStartkapital();
             double jaehrlicheEinzahlung = entry.getValue().getJaehrlicheEinzahlung();
+            gesamtStartkapital += kapital;
 
-            switch (typ.toLowerCase()) {
-                case "aktien" -> investments.add(new Aktien(kapital, laufzeit, jaehrlicheEinzahlung));
-                case "anleihen" -> investments.add(new Anleihen(kapital, laufzeit, jaehrlicheEinzahlung));
-                case "immobilien" -> investments.add(new Immobilien(kapital, laufzeit, jaehrlicheEinzahlung));
-                case "rohstoffe" -> investments.add(new Rohstoffe(kapital, laufzeit, jaehrlicheEinzahlung));
-                default -> logger.warn("Unbekannte Anlageklasse: " + typ);
+            Anlageklasse investment = switch (typ.toLowerCase()) {
+                case "aktien" -> new Aktien(kapital, laufzeit, jaehrlicheEinzahlung);
+                case "anleihen" -> new Anleihen(kapital, laufzeit, jaehrlicheEinzahlung);
+                case "immobilien" -> new Immobilien(kapital, laufzeit, jaehrlicheEinzahlung);
+                case "rohstoffe" -> new Rohstoffe(kapital, laufzeit, jaehrlicheEinzahlung);
+                default -> {
+                    logger.warn("Unbekannte Anlageklasse: " + typ);
+                    yield null;
+                }
+            };
+
+            if (investment != null) {
+                investments.add(investment);
+                List<Map<String, Object>> verlauf = mainSimulation.simuliereVerlauf(investment);
+                double endkapital = (double) verlauf.get(verlauf.size() - 1).get("endkapital");
+                gesamtEndkapital += endkapital;
+                ergebnisse.put(typ, verlauf);
             }
         }
 
-        for (int jahr = 1; jahr <= laufzeit; jahr++) {
-            double gesamtKapital = 0;
-            for (Anlageklasse investment : investments) {
-                Map<Integer, Double> verlauf = investment.simuliereVerlauf();
-                double kapitalJahr = verlauf.getOrDefault(jahr, 0.0);
-                gesamtKapital += kapitalJahr;
-                logger.info("Jahr {}: Kapital {} für {}", jahr, kapitalJahr, investment.getClass().getSimpleName());
-            }
-            simulationErgebnisse.put(jahr, gesamtKapital);
-        }
-
-        logger.info("Simulation abgeschlossen. Ergebnisse: " + simulationErgebnisse);
-        return simulationErgebnisse;
+        ergebnisse.put("gesamtStartkapital", gesamtStartkapital);
+        ergebnisse.put("gesamtEndkapital", gesamtEndkapital);
+        return ergebnisse;
     }
 }
