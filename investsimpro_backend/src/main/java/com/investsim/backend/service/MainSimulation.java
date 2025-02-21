@@ -28,6 +28,7 @@ public class MainSimulation {
 
             verlauf.add(jahrDaten);
         }
+
         return verlauf;
     }
 }

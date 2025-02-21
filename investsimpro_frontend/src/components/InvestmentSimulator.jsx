@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./InvestmentSimulator.css";
-import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 export default function InvestmentSimulator({ onBack }) {
     const [selectedInvestments, setSelectedInvestments] = useState([]);
@@ -78,8 +77,6 @@ export default function InvestmentSimulator({ onBack }) {
             alert("Fehler beim Laden der Simulationsergebnisse.");
         }
     };
-
-    const colors = ["#ffcc00", "#ff6600", "#33cc33", "#0099ff"];
 
     if (loading) {
         return (
@@ -191,46 +188,6 @@ export default function InvestmentSimulator({ onBack }) {
                                     )}
                                 </div>
                             ))}
-                            <div className="summary">
-                                <p>Gesamtrendite nach {investmentPeriod} Jahren: {simulationResults.totalReturn !== undefined ? simulationResults.totalReturn.toFixed(2) : "N/A"} €</p>
-                                <p>Endkapital: {simulationResults.totalEndCapital !== undefined ? simulationResults.totalEndCapital.toFixed(2) : "N/A"} €</p>
-                            </div>
-                            <div className="chart-container">
-                                {simulationResults.portfolioStart && simulationResults.portfolioEnd && (
-                                    <PieChart width={400} height={400}>
-                                        <Pie
-                                            data={simulationResults.portfolioStart}
-                                            dataKey="value"
-                                            nameKey="name"
-                                            cx="50%"
-                                            cy="50%"
-                                            outerRadius={60}
-                                            fill="#8884d8"
-                                        >
-                                            {simulationResults.portfolioStart.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                                            ))}
-                                        </Pie>
-                                        <Pie
-                                            data={simulationResults.portfolioEnd}
-                                            dataKey="value"
-                                            nameKey="name"
-                                            cx="50%"
-                                            cy="50%"
-                                            innerRadius={70}
-                                            outerRadius={90}
-                                            fill="#82ca9d"
-                                            label
-                                        >
-                                            {simulationResults.portfolioEnd.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip />
-                                        <Legend />
-                                    </PieChart>
-                                )}
-                            </div>
                         </div>
                     )}
                 </div>
