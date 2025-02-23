@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LandingPage from "./components/LandingPage.jsx";
 import InvestmentSimulator from "./components/InvestmentSimulator.jsx";
@@ -34,7 +34,7 @@ export default function App() {
                 <Router>
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
-                        <Route path="/simulator" element={<InvestmentSimulator />} />
+                        <Route path="/simulator" element={<InvestmentSimulatorWrapper />} />
                         <Route path="/impressum" element={<ImpressumPage />} />
                         <Route path="/datenschutz" element={<DatenschutzPage />} />
                         <Route path="/ueber-uns" element={<ÜberUnsPage />} />
@@ -45,4 +45,14 @@ export default function App() {
             )}
         </>
     );
+}
+
+function InvestmentSimulatorWrapper() {
+    const navigate = useNavigate();
+
+    const handleBack = () => {
+        navigate("/"); // Navigiert zur Hauptseite
+    };
+
+    return <InvestmentSimulator onBack={handleBack} />;
 }

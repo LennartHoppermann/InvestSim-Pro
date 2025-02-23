@@ -155,39 +155,50 @@ export default function InvestmentSimulator({ onBack }) {
                     <button className="calculate-button" onClick={handleSubmit}>
                         Investitionsberechnung durchführen
                     </button>
+                    <div className="spacer"></div>
 
                     {simulationResults && (
                         <div className="results-container">
-                            <h3>Ergebnisse der Investitionssimulation</h3>
+                            <h3 className="results-header">Ergebnisse der Investitionssimulation</h3>
                             {Object.entries(simulationResults).map(([investment, results]) => (
-                                <div key={investment}>
-                                    <h4>{investment}</h4>
-                                    {Array.isArray(results) ? (
-                                        <table className="results-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Jahr</th>
-                                                    <th>Startkapital (€)</th>
-                                                    <th>Rendite (%)</th>
-                                                    <th>Endkapital (€)</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {results.map(({ jahr, startkapital, rendite, endkapital }) => (
-                                                    <tr key={jahr}>
-                                                        <td>{jahr}</td>
-                                                        <td>{startkapital !== undefined ? startkapital.toFixed(2) : "N/A"} €</td>
-                                                        <td>{rendite !== undefined ? rendite.toFixed(2) : "N/A"} %</td>
-                                                        <td>{endkapital !== undefined ? endkapital.toFixed(2) : "N/A"} €</td>
+                                investment !== "gesamtRendite" && investment !== "gesamtEndkapital" && (
+                                    <div key={investment}>
+                                        <h4>{investment}</h4>
+                                        {Array.isArray(results) ? (
+                                            <table className="results-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Jahr</th>
+                                                        <th>Startkapital (€)</th>
+                                                        <th>Rendite (%)</th>
+                                                        <th>Endkapital (€)</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    ) : (
-                                        <p>Keine Ergebnisse verfügbar</p>
-                                    )}
-                                </div>
+                                                </thead>
+                                                <tbody>
+                                                    {results.map(({ jahr, startkapital, rendite, endkapital }) => (
+                                                        <tr key={jahr}>
+                                                            <td>{jahr}</td>
+                                                            <td>{startkapital !== undefined ? startkapital.toFixed(2) : "N/A"} €</td>
+                                                            <td>{rendite !== undefined ? rendite.toFixed(2) : "N/A"} %</td>
+                                                            <td>{endkapital !== undefined ? endkapital.toFixed(2) : "N/A"} €</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        ) : (
+                                            <p>Keine Ergebnisse verfügbar</p>
+                                        )}
+                                    </div>
+                                )
                             ))}
+                            <div className="summary">
+                                {simulationResults.gesamtRendite !== undefined && !isNaN(simulationResults.gesamtRendite) && (
+                                    <p>Gesamtrendite nach {investmentPeriod} Jahren: {simulationResults.gesamtRendite.toFixed(2)} %</p>
+                                )}
+                                {simulationResults.gesamtEndkapital !== undefined && simulationResults.gesamtEndkapital > 0 && (
+                                    <p>Endkapital: {simulationResults.gesamtEndkapital.toFixed(2)} €</p>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>

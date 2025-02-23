@@ -27,10 +27,14 @@ public class SimulationService {
 
         logger.info("Simulation gestartet mit Investitionen: " + investitionen + ", Laufzeit: " + laufzeit);
 
+        double gesamtStartkapital = 0;
+        double gesamtEndkapital = 0;
+
         for (Map.Entry<String, InvestmentDetail> entry : investitionen.entrySet()) {
             String typ = entry.getKey();
             double kapital = entry.getValue().getStartkapital();
             double jaehrlicheEinzahlung = entry.getValue().getJaehrlicheEinzahlung();
+            gesamtStartkapital += kapital;
 
             Anlageklasse investment = switch (typ.toLowerCase()) {
                 case "aktien" -> new Aktien(kapital, laufzeit, jaehrlicheEinzahlung);
@@ -46,9 +50,15 @@ public class SimulationService {
             if (investment != null) {
                 investments.add(investment);
                 List<Map<String, Object>> verlauf = mainSimulation.simuliereVerlauf(investment);
+                double endkapital = (double) verlauf.get(verlauf.size() - 1).get("endkapital");
+                gesamtEndkapital += endkapital;
                 ergebnisse.put(typ, verlauf);
             }
         }
+
+        double gesamtRendite = (gesamtEndkapital - gesamtStartkapital) / gesamtStartkapital * 100;
+        ergebnisse.put("gesamtRendite", gesamtRendite);
+        ergebnisse.put("gesamtEndkapital", gesamtEndkapital);
 
         return ergebnisse;
     }
