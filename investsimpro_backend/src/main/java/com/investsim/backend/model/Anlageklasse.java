@@ -1,5 +1,10 @@
 package com.investsim.backend.model;
 
+/**
+ * Die abstrakte Klasse Anlageklasse repräsentiert eine allgemeine Anlageklasse.
+ * Sie enthält grundlegende Informationen wie Name, Startkapital, Laufzeit, jährliche Einzahlung,
+ * durchschnittliche Rendite und Volatilität.
+ */
 public abstract class Anlageklasse {
     protected String name;
     protected double startkapital;
@@ -8,6 +13,16 @@ public abstract class Anlageklasse {
     protected double durchschnittlicheRendite;
     protected double volatilitaet;
 
+    /**
+     * Konstruktor für die Anlageklasse.
+     * 
+     * @param name der Name der Anlageklasse
+     * @param startkapital das Startkapital
+     * @param laufzeit die Laufzeit in Jahren
+     * @param jaehrlicheEinzahlung die jährliche Einzahlung
+     * @param rendite die durchschnittliche Rendite
+     * @param volatilitaet die Volatilität
+     */
     public Anlageklasse(String name, double startkapital, int laufzeit, double jaehrlicheEinzahlung, double rendite, double volatilitaet) {
         this.name = name;
         this.startkapital = startkapital;

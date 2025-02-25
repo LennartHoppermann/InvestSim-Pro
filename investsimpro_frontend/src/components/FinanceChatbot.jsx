@@ -5,7 +5,7 @@ export default function FinanceChatbot() {
     const [response, setResponse] = useState("");
 
     const handleAsk = async () => {
-        // Hier könntest du eine OpenAI- oder GPT-API nutzen.
+        // Hier OpenAI- oder GPT-API nutzen.
         const fakeResponses = {
             "Soll ich jetzt in Tech-Aktien investieren?": "Tech-Aktien zeigen aktuell hohe Volatilität. Diversifikation empfohlen!",
             "Wie entwickelt sich Gold?": "Gold bleibt stabil aufgrund wirtschaftlicher Unsicherheiten.",

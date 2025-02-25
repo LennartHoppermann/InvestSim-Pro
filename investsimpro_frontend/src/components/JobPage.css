@@ -1,3 +1,4 @@
+/* Allgemeine Stile für den Body */
 body {
     background-color: #0d0d2b;
     color: #ffffff;
@@ -6,16 +7,19 @@ body {
     padding: 0;
 }
 
+/* Container für die Job-Seite */
 .job-container {
     text-align: center;
     padding: 40px;
 }
 
+/* Stil für den leuchtenden Titel */
 .glowing-title {
     font-size: 2rem;
     text-shadow: 0px 0px 10px #00ffff;
 }
 
+/* Stil für die Job-Liste */
 .job-list {
     display: flex;
     flex-wrap: wrap;
@@ -24,6 +28,7 @@ body {
     margin-top: 20px;
 }
 
+/* Stil für die Job-Karten */
 .job-card {
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
@@ -33,10 +38,12 @@ body {
     transition: transform 0.3s;
 }
 
+/* Hover-Effekt für die Job-Karten */
 .job-card:hover {
     transform: scale(1.05);
 }
 
+/* Stil für den Bewerbungsbutton */
 .apply-button {
     background: #00ffff;
     color: #111;
@@ -50,10 +57,12 @@ body {
     transition: background 0.2s;
 }
 
+/* Hover-Effekt für den Bewerbungsbutton */
 .apply-button:hover {
     background: #0066ff;
 }
 
+/* Stil für den geheimen Job-Button */
 .secret-job-button {
     background: linear-gradient(90deg, #00ffff, #0066ff);
     color: #ffffff;
@@ -66,6 +75,7 @@ body {
     margin-top: 20px;
 }
 
+/* Stil für den geheimen Job */
 .secret-job {
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
@@ -75,6 +85,7 @@ body {
     margin: 20px auto;
 }
 
+/* Stil für den Footer */
 .footer {
     margin-top: 40px;
     padding: 20px;
@@ -83,6 +94,7 @@ body {
     box-shadow: 0px 0px 10px #00ffff;
 }
 
+/* Stil für die Links im Footer */
 .footer-nav a {
     color: #00ffff;
     text-decoration: none;
@@ -91,12 +103,14 @@ body {
     transition: color 0.3s;
 }
 
+/* Stil für die Navigation im Footer */
 .footer-nav {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
+/* Hover-Effekt für die Links im Footer */
 .footer-nav a:hover {
     color: #ffffff;
     text-shadow: 0px 0px 10px #00ffff;

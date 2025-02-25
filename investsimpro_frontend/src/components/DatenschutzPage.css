@@ -1,3 +1,4 @@
+/* Allgemeine Stile für den Body */
 body {
     background-color: #0d0d2b;
     color: #ffffff;
@@ -7,6 +8,7 @@ body {
     overflow: hidden; /* Verhindert das Scrollen des gesamten Fensters */
 }
 
+/* Container für die Datenschutzseite */
 .datenschutz-container {
     text-align: center;
     padding: 20px;
@@ -17,8 +19,9 @@ body {
     align-items: center;
 }
 
+/* Stil für den scrollbaren Inhalt */
 .scrollable-content {
-    max-height: 80vh; /* Scrollbarer Bereich */
+    max-height: 80vh;
     overflow-y: auto;
     padding: 20px;
     width: 90%;
@@ -27,6 +30,7 @@ body {
     box-shadow: 0px 0px 10px #00ffff;
 }
 
+/* Stil für den Header */
 .header {
     text-align: center;
     padding: 20px;
@@ -36,6 +40,7 @@ body {
     margin-bottom: 10px;
 }
 
+/* Stil für den leuchtenden Titel */
 .glowing-title {
     font-size: 2rem;
     font-weight: bold;
@@ -43,11 +48,13 @@ body {
     text-shadow: 0px 0px 15px #00ffff;
 }
 
+/* Stil für den Inhalt */
 .content {
     max-width: 800px;
     margin: 0 auto;
 }
 
+/* Stil für die Info-Boxen */
 .info-box {
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
@@ -58,11 +65,13 @@ body {
     max-width: 90%;
 }
 
+/* Hover-Effekt für die Info-Boxen */
 .info-box:hover {
     transform: scale(1.02);
     box-shadow: 0px 0px 20px #00ffff;
 }
 
+/* Stil für den Footer */
 .footer {
     margin-top: 30px;
     padding: 20px;
@@ -71,6 +80,7 @@ body {
     box-shadow: 0px 0px 10px #00ffff;
 }
 
+/* Stil für die Links im Footer */
 .footer-nav a {
     color: #00ffff;
     text-decoration: none;
@@ -79,6 +89,7 @@ body {
     transition: color 0.3s;
 }
 
+/* Hover-Effekt für die Links im Footer */
 .footer-nav a:hover {
     color: #ffffff;
     text-shadow: 0px 0px 10px #00ffff;

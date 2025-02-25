@@ -1,11 +1,11 @@
-/* 🌎 Reset für das gesamte Layout */
+/* Reset für das gesamte Layout */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 🌍 Sicherstellen, dass die Seite immer zentriert bleibt */
+/* Sicherstellen, dass die Seite immer zentriert bleibt */
 html, body {
   width: 100%;
   height: 100%;
@@ -17,7 +17,7 @@ html, body {
   font-family: "Arial", sans-serif;
 }
 
-/* 🚀 Fix: Verhindert das Verschieben nach rechts */
+/* Fix: Verhindert das Verschieben nach rechts */
 #root {
   width: 100%;
   text-align: center;
@@ -26,7 +26,7 @@ html, body {
   align-items: center;
 }
 
-/* 🎬 🔥 SPLASH-SCREEN / LOADING ANIMATION */
+/* SPLASH-SCREEN / LOADING ANIMATION */
 #splash-screen {
   position: fixed;
   width: 100%;
@@ -47,7 +47,7 @@ html, body {
   100% { opacity: 0; visibility: hidden; }
 }
 
-/* 🌀 Neon Loading-Animation */
+/* Neon Loading-Animation */
 .loading-icon {
   width: 80px; /* Größer für mehr Präsenz */
   height: 80px;
@@ -63,7 +63,7 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
-/* 🎭 Dezenter Glitch-Effekt für Text */
+/* Dezenter Glitch-Effekt für Text */
 .glitch-text {
   font-size: 42px; /* Leicht vergrößert für bessere Sichtbarkeit */
   font-weight: bold;
@@ -78,7 +78,7 @@ html, body {
   100% { text-shadow: -1px -1px 5px #0ff, 1px 1px 5px #f0f; transform: skewX(-3deg); }
 }
 
-/* 🏴‍☠️ Sidebar-Fix */
+/* Sidebar-Fix */
 .sidebar {
   position: fixed;
   left: 0;
@@ -90,7 +90,7 @@ html, body {
   text-align: left;
 }
 
-/* 🎨 Dezenterer Glitch-Effekt für Menü */
+/* Dezenterer Glitch-Effekt für Menü */
 .menu-dropdown a {
   display: flex;
   align-items: center;

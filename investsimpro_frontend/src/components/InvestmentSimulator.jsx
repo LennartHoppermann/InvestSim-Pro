@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./InvestmentSimulator.css";
 
 export default function InvestmentSimulator({ onBack }) {
+    // State-Variablen
     const [selectedInvestments, setSelectedInvestments] = useState([]);
     const [investmentAmounts, setInvestmentAmounts] = useState({});
     const [annualContributions, setAnnualContributions] = useState({});
@@ -9,7 +10,9 @@ export default function InvestmentSimulator({ onBack }) {
     const [simulationResults, setSimulationResults] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
 
+    // Verfügbare Investitionsoptionen
     const investmentOptions = [
         { name: "Aktien", risk: "Hoch", return: "8-12%" },
         { name: "Anleihen", risk: "Niedrig", return: "2-5%" },
@@ -17,6 +20,7 @@ export default function InvestmentSimulator({ onBack }) {
         { name: "Rohstoffe", risk: "Hoch", return: "5-10%" },
     ];
 
+    // Funktion zum Umschalten der Auswahl einer Investition
     const toggleInvestment = (name) => {
         setSelectedInvestments((prev) =>
             prev.includes(name) ? prev.filter((item) => item !== name) : [...prev, name]
@@ -33,22 +37,36 @@ export default function InvestmentSimulator({ onBack }) {
         }));
     };
 
+    // Funktion zum Ändern des Investitionsbetrags
     const handleInvestmentChange = (name, value) => {
-        setInvestmentAmounts((prev) => ({ ...prev, [name]: parseFloat(value) || "" }));
+        if (!isNaN(value)) {
+            setInvestmentAmounts((prev) => ({ ...prev, [name]: parseFloat(value) || "" }));
+            setErrorMessage(""); 
+        } else {
+            setErrorMessage("Bitte geben Sie eine gültige Zahl ein.");
+        }
     };
 
+    // Funktion zum Ändern der jährlichen Einzahlung
     const handleContributionChange = (name, value) => {
-        setAnnualContributions((prev) => ({ ...prev, [name]: parseFloat(value) || "" }));
+        if (!isNaN(value)) {
+            setAnnualContributions((prev) => ({ ...prev, [name]: parseFloat(value) || "" }));
+            setErrorMessage(""); 
+        } else {
+            setErrorMessage("Bitte geben Sie eine gültige Zahl ein.");
+        }
     };
 
+    // Effekt zum Simulieren eines Ladevorgangs
     useEffect(() => {
         const timer = setTimeout(() => setLoading(false), 3000);
         return () => clearTimeout(timer);
     }, []);
 
+    // Funktion zum Absenden der Simulationsanfrage
     const handleSubmit = async () => {
         if (!investmentPeriod || selectedInvestments.length === 0) {
-            alert("Bitte alle Felder ausfüllen!");
+            setErrorMessage("Bitte alle Felder ausfüllen!");
             return;
         }
 
@@ -69,15 +87,20 @@ export default function InvestmentSimulator({ onBack }) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(requestBody),
             });
-            if (!response.ok) throw new Error("Fehler beim Abrufen der Daten");
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Fehler beim Abrufen der Daten");
+            }
             const data = await response.json();
             setSimulationResults(data);
+            setErrorMessage("");
         } catch (error) {
             console.error("Fehler:", error);
-            alert("Fehler beim Laden der Simulationsergebnisse.");
+            setErrorMessage(error.message);
         }
     };
 
+    // Anzeige eines Ladescreens während des Ladevorgangs
     if (loading) {
         return (
             <div id="splash-screen">
@@ -87,6 +110,7 @@ export default function InvestmentSimulator({ onBack }) {
         );
     }
 
+    // Haupt-Render-Funktion der Komponente
     return (
         <div className="page-container">
             <nav className="navbar">
@@ -150,6 +174,8 @@ export default function InvestmentSimulator({ onBack }) {
                             ))}
                         </>
                     )}
+
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
 
                     <div className="spacer"></div>
                     <button className="calculate-button" onClick={handleSubmit}>

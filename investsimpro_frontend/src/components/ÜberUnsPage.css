@@ -1,3 +1,4 @@
+/* Allgemeine Stile für den Body */
 body {
     background-color: #0d0d2b;
     color: #ffffff;
@@ -7,6 +8,7 @@ body {
     overflow-x: hidden;
 }
 
+/* Container für die Über uns-Seite */
 .ueber-uns-container {
     text-align: center;
     padding: 40px;
@@ -17,6 +19,7 @@ body {
     white-space: nowrap;
 }
 
+/* Container für die scrollbare Story */
 .story-scroll-container {
     display: flex;
     gap: 30px;
@@ -27,6 +30,7 @@ body {
     white-space: normal;
 }
 
+/* Stil für die Story-Boxen */
 .story-box {
     background: rgba(255, 255, 255, 0.1);
     padding: 40px;
@@ -43,17 +47,20 @@ body {
     line-height: 1.8rem;
 }
 
+/* Stil für die Texte in den Story-Boxen */
 .story-box p {
     word-wrap: break-word;
     overflow-wrap: break-word;
     margin-top: 15px;
 }
 
+/* Hover-Effekt für die Story-Boxen */
 .story-box:hover {
     transform: scale(1.03);
     box-shadow: 0px 0px 20px #00ffff;
 }
 
+/* Stil für die Bilder in den Story-Boxen */
 .story-image {
     width: 100%;
     max-height: 300px;
@@ -63,6 +70,7 @@ body {
     margin-top: 15px;
 }
 
+/* Stil für den Footer */
 .footer {
     margin-top: 40px;
     padding: 20px;
@@ -71,6 +79,7 @@ body {
     box-shadow: 0px 0px 10px #00ffff;
 }
 
+/* Stil für die Links im Footer */
 .footer-nav a {
     color: #00ffff;
     text-decoration: none;
@@ -79,6 +88,7 @@ body {
     transition: color 0.3s;
 }
 
+/* Hover-Effekt für die Links im Footer */
 .footer-nav a:hover {
     color: #ffffff;
     text-shadow: 0px 0px 10px #00ffff;

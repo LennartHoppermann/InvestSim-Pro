@@ -5,13 +5,13 @@ export default function LiveStockData() {
 
     useEffect(() => {
         const fetchStockData = async () => {
-            // Hier kannst du eine echte API verwenden, z. B. Alpha Vantage oder Yahoo Finance
+            // Hier echte API verwenden
             const fakeData = { dax: 15980, sp500: 4350, bitcoin: 38750 };
             setStockData(fakeData);
         };
 
         fetchStockData();
-        const interval = setInterval(fetchStockData, 10000); // Update alle 10s
+        const interval = setInterval(fetchStockData, 10000);
 
         return () => clearInterval(interval);
     }, []);

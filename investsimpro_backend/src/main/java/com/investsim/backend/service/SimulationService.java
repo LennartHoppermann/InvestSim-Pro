@@ -21,6 +21,13 @@ public class SimulationService {
         this.mainSimulation = mainSimulation;
     }
 
+    /**
+     * Führt die Simulation der Investitionen durch.
+     * 
+     * @param investitionen eine Map mit den Investitionsdetails
+     * @param laufzeit die Laufzeit der Simulation in Jahren
+     * @return eine Map mit den Ergebnissen der Simulation
+     */
     public Map<String, Object> simuliereInvestition(Map<String, InvestmentDetail> investitionen, int laufzeit) {
         Map<String, Object> ergebnisse = new LinkedHashMap<>();
         List<Anlageklasse> investments = new ArrayList<>();
